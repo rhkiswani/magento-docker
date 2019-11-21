@@ -1,0 +1,30 @@
+version: '2'
+services:
+  magento:
+    image: 'bitnami/magento:2'
+    environment:
+      - MARIADB_HOST=database-octank-web-instance-1.cncw7aljdf7j.us-east-1.rds.amazonaws.com
+      - MARIADB_PORT_NUMBER=3306
+      - MAGENTO_DATABASE_USER=admin
+      - MAGENTO_DATABASE_PASSWORD=L0ng!sland
+      - MAGENTO_DATABASE_NAME=bitnami_magento
+      - ELASTICSEARCH_HOST=elasticsearch
+      - ELASTICSEARCH_PORT_NUMBER=9200
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - 'magento_data:/bitnami'
+    depends_on:
+      - elasticsearch
+  elasticsearch:
+    image: 'bitnami/elasticsearch:6'
+    volumes:
+      - 'elasticsearch_data:/bitnami/elasticsearch/data'
+volumes:
+  elasticsearch_data:
+    driver: local
+  mariadb_data:
+    driver: local
+  magento_data:
+    driver: local
